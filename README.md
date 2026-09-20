@@ -137,5 +137,13 @@ If you'd rather host on Hugging Face Spaces instead:
   processing and are not stored by this app itself.
 - **Rate limits**: for very large batches (100+ cards), consider adding a
   short delay between calls if you hit rate limits on your DashScope plan.
-- **"AI Usage"**
+  
+**"AI Usage"**
+- AI used is Claude.
+- It was used to improvise the written code to make it more accurate.
+- significant AI-generated code or architectural recommendations adopted-
+   - Image downscaling beforee upload.
+   - Secrets-handling pattern.
+   - Streamlit UI/styling conventions.
+     
   
