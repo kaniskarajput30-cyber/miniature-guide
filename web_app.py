@@ -240,7 +240,6 @@ with gr.Blocks(title="Business Card Lead Extractor (Qwen-VL)") as demo:
             type="password",
             placeholder="sk-... (leave blank to use DASHSCOPE_API_KEY env var)",
         )
-       base_url_box = gr.Textbox(label="API Base URL", value=DEFAULT_BASE_URL)
         model_box = gr.Textbox(label="Model", value=DEFAULT_MODEL)
 
     with gr.Row():
