@@ -84,6 +84,7 @@ use the first one listed.
 - Return valid JSON and nothing else.
 """
 
+
 @dataclass
 class Lead:
     first_name: str = ""
@@ -110,6 +111,7 @@ class Lead:
             "Status": self.status,
         }
 
+
 # --------------------------------------------------------------------------
 # Helpers
 # --------------------------------------------------------------------------
@@ -122,6 +124,7 @@ def get_api_key() -> Optional[str]:
     except Exception:
         pass
     return os.environ.get("DASHSCOPE_API_KEY")
+
 
 def downscale_image(image_bytes: bytes) -> bytes:
     """Downscale very large images to keep API calls fast/cheap. Returns JPEG bytes."""
@@ -144,6 +147,7 @@ def downscale_image(image_bytes: bytes) -> bytes:
 def image_to_data_url(image_bytes: bytes) -> str:
     encoded = base64.b64encode(image_bytes).decode("utf-8")
     return f"data:image/jpeg;base64,{encoded}"
+
 
 def extract_json_from_text(text: str) -> dict:
     """Qwen-VL sometimes wraps JSON in markdown fences or adds stray text.
@@ -176,7 +180,7 @@ def call_qwen_vl(image_bytes: bytes, api_key: str, model: str) -> dict:
         }
     ]
 
-response = MultiModalConversation.call(model=model, messages=messages)
+    response = MultiModalConversation.call(model=model, messages=messages)
 
     if response.status_code != 200:
         raise RuntimeError(
@@ -192,6 +196,7 @@ response = MultiModalConversation.call(model=model, messages=messages)
         text = str(content)
 
     return extract_json_from_text(text)
+
 
 def process_card(
     file_name: str, image_bytes: bytes, api_key: str, model: str, retries: int = 2
@@ -218,6 +223,7 @@ def process_card(
                 time.sleep(1.5 * (attempt + 1))
             continue
     return Lead(source_file=file_name, status="error", error_message=last_error)
+
 
 def leads_to_dataframe(leads: list) -> pd.DataFrame:
     rows = [lead.to_display_row() for lead in leads]
@@ -249,6 +255,7 @@ def dataframe_to_excel_bytes(df: pd.DataFrame) -> bytes:
             )
     return output.getvalue()
 
+
 # --------------------------------------------------------------------------
 # Streamlit UI
 # --------------------------------------------------------------------------
@@ -269,7 +276,7 @@ def main():
         )
         st.stop()
 
-# ---- Sidebar: settings ----
+    # ---- Sidebar: settings ----
     with st.sidebar:
         st.header("Settings")
         api_key = get_api_key()
@@ -299,7 +306,7 @@ def main():
             "API for extraction."
         )
 
-effective_key = api_key_input or api_key
+    effective_key = api_key_input or api_key
 
     # ---- Main: upload ----
     uploaded_files = st.file_uploader(
@@ -326,7 +333,7 @@ effective_key = api_key_input or api_key
         progress = st.progress(0.0, text="Starting...")
         status_area = st.empty()
 
-         total = len(uploaded_files)
+        total = len(uploaded_files)
         for idx, file in enumerate(uploaded_files):
             status_area.info(f"Processing **{file.name}** ({idx + 1}/{total})...")
             file.seek(0)
@@ -347,7 +354,7 @@ effective_key = api_key_input or api_key
         else:
             st.success(f"Extracted all {n_ok} card(s) successfully!")
 
- # ---- Results ----
+    # ---- Results ----
     if "leads_df" in st.session_state:
         df = st.session_state["leads_df"]
         st.subheader("Extracted Leads")
