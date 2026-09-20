@@ -137,3 +137,5 @@ If you'd rather host on Hugging Face Spaces instead:
   processing and are not stored by this app itself.
 - **Rate limits**: for very large batches (100+ cards), consider adding a
   short delay between calls if you hit rate limits on your DashScope plan.
+- **"AI Usage"**
+  
